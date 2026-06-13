@@ -1,0 +1,12 @@
+venv/
+
+.env
+
+database/precos.db
+
+__pycache__/
+*.pyc
+
+pagina_cheers.png
+texto_pagina.txt
+html_pagina.html
