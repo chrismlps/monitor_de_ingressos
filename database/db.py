@@ -1,7 +1,6 @@
 import sqlite3
 from datetime import datetime
 
-# Caminho do arquivo do banco de dados
 BANCO = "database/precos.db"
 
 def criar_tabelas():
@@ -43,7 +42,6 @@ def salvar_coleta(dados: dict):
     conn = sqlite3.connect(BANCO)
     cursor = conn.cursor()
 
-    # Salva a coleta principal
     cursor.execute("""
         INSERT INTO coletas (url, nome_evento, horario_coleta)
         VALUES (?, ?, ?)
@@ -51,9 +49,7 @@ def salvar_coleta(dados: dict):
 
     coleta_id = cursor.lastrowid
 
-    # Salva cada ingresso da coleta
     for ingresso in dados["ingressos"]:
-        # Extrai só o número do preço (ex: "A PARTIR DE R$ 10,00" → 10.0)
         try:
             preco_texto = ingresso["preco"]
             preco_valor = float(
@@ -107,11 +103,10 @@ def buscar_historico(url: str) -> list:
     return historico
 
 
-# Teste direto
+# Teste
 if __name__ == "__main__":
     criar_tabelas()
 
-    # Simula salvar uma coleta de teste
     dados_teste = {
         "url": "https://cheers.com.br/evento/cupido-fdp-sexta-dos-solteiros-33006",
         "evento": "Cupido FDP! Sexta dos solteiros!",
@@ -124,7 +119,6 @@ if __name__ == "__main__":
 
     salvar_coleta(dados_teste)
 
-    # Busca e mostra o histórico
     historico = buscar_historico(dados_teste["url"])
     print("\nHistórico salvo:")
     for item in historico:

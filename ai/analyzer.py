@@ -3,11 +3,9 @@ import sys
 from dotenv import load_dotenv
 from groq import Groq
 
-# Carrega a chave do arquivo .env
 load_dotenv()
 cliente = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# Adiciona o caminho raiz para importar o banco
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from database.db import buscar_historico
 
@@ -20,7 +18,6 @@ def analisar_precos(url: str) -> str:
     if not historico:
         return "Nenhum dado encontrado para esse evento."
 
-    # Monta um resumo do histórico para mandar para a IA
     resumo = ""
     for item in historico:
         resumo += f"- {item['horario']} | Setor: {item['setor']} | Preço: R$ {item['preco']}\n"

@@ -19,7 +19,7 @@ def scrape_cheers(url: str) -> dict:
         print(f"Acessando: {url}")
         pagina.goto(url, wait_until="networkidle")
 
-        # Extrai o nome do evento
+        # Extrair o nome do evento
         try:
             nome_evento = pagina.inner_text("h1")
         except:
@@ -27,7 +27,7 @@ def scrape_cheers(url: str) -> dict:
 
         ingressos = []
 
-        # Formato 1: setores separados (ex: Pista, Camarote)
+        # Formato 1: setores separados (ex: Pista, Camarote, etc)
         setores = pagina.query_selector_all("section[aria-labelledby^='event-v2-batch-group-']")
         for setor in setores:
             try:
@@ -43,7 +43,6 @@ def scrape_cheers(url: str) -> dict:
         # Formato 2: ingresso único (sem setores)
         if not ingressos:
             try:
-                # Pega todos os blocos de ingresso individual
                 blocos = pagina.query_selector_all("section[id^='event-v2-batches'] div.flex.flex-col")
                 for bloco in blocos:
                     try:
@@ -67,7 +66,6 @@ def scrape_cheers(url: str) -> dict:
                 linhas = texto_completo.split("\n")
                 for i, linha in enumerate(linhas):
                     if "R$" in linha and "taxa" not in linha.lower() and "economiza" not in linha.lower():
-                        # Procura o nome nas linhas anteriores, pulando linhas vazias
                         nome_setor = "Ingresso"
                         for j in range(i - 1, max(i - 5, 0), -1):
                             candidato = linhas[j].strip()
